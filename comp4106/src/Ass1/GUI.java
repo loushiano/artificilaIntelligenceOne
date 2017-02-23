@@ -58,7 +58,7 @@ public class GUI {
 			contentPane = frame.getContentPane();
 			contentPane.add(pane);
 			
-			frame.setPreferredSize(new Dimension(500,500));
+			frame.setPreferredSize(new Dimension(450,500));
 			frame.setResizable(false);
 			frame.pack();
 			frame.setVisible(true);
