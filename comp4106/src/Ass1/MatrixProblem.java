@@ -16,9 +16,9 @@ public class MatrixProblem {
 		matrix[0][1]=2;
 		matrix[0][2]=3;
 		matrix[1][0]=8;
-		matrix[1][1]=7;
+		matrix[1][1]=4;
 		matrix[1][2]=0;
-		matrix[2][0]=4;
+		matrix[2][0]=7;
 		matrix[2][1]=6;
 		matrix[2][2]=5;
 		operations = new ArrayList<Integer>();
@@ -62,6 +62,75 @@ public class MatrixProblem {
 		currentNode.print();
 	
 	}
+	public void dfs(){
+		MatrixNode currentNode = fringes.remove(0);
+		while(!allInRightPosition(currentNode)
+				){
+			closed.add(currentNode);
+			currentNode.print();
+			System.out.println(currentNode.getStage());
+			if(currentNode.getStage()<30){
+			addChildren(currentNode);
+			for (MatrixNode n: currentNode.getChildren()){
+				fringes.add(n);
+			}
+			}
+			
+			int i=0;
+			while(i==0)
+			if(notInClosed(fringes.get(fringes.size()-1))){
+				currentNode=fringes.remove(fringes.size()-1);
+			i=1;
+			}else {
+				fringes.remove(fringes.size()-1);
+				
+		}
+		}
+		System.out.println("done");
+		currentNode.print();
+	}
+public void aStarSearch(){
+		
+		MatrixNode currentNode =fringes.remove(0);
+		while(!allInRightPosition(currentNode)){
+			closed.add(currentNode);
+			currentNode.print();
+			addChildren(currentNode);
+			for(MatrixNode n:currentNode.getChildren()){
+				fringes.add(n);
+			}
+			sortFringes();
+			currentNode =fringes.remove(0);
+			
+			
+			
+			
+		}
+		System.out.println("done");
+		
+	}
+private void sortFringes() {
+	for(int i=0;i<fringes.size();i++){
+		for(int j=0;j<fringes.size()-1;j++){
+			if(g(fringes.get(j))>g(fringes.get(j+1))){
+				
+				MatrixNode n=fringes.get(j);
+				fringes.set(j,fringes.get(j+1));
+				fringes.set(j+1, n);
+			}
+		}
+		
+	}
+	
+}
+private int g(MatrixNode n){
+	
+	
+	return heuristicOne(n)+n.getStage();
+}
+private int heuristicOne(MatrixNode n) {
+	return 0;
+}
 
 	private boolean allInRightPosition(MatrixNode currentNode) {
 		int k =1;
@@ -199,6 +268,6 @@ public class MatrixProblem {
 
 	public static void main(String args[]){
 		MatrixProblem mp = new MatrixProblem();
-		mp.bfs();
+		mp.aStarSearch();
 	}
 }
