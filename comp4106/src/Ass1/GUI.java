@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class GUI {
@@ -24,7 +25,7 @@ public class GUI {
 		//getFrame().setPreferredSize(new Dimension(1200, 700));
 		buttons = new ArrayList<JButton>();
 		
-		
+		this.controler=controler;
 		
 		frame.setResizable(true);
 		}
@@ -45,6 +46,14 @@ public class GUI {
 			b7=new JButton();
 			b8 =new JButton();
 			b.addActionListener(controler);
+			b1.addActionListener(controler);
+			b2.addActionListener(controler);
+			b3.addActionListener(controler);
+			b4.addActionListener(controler);
+			b5.addActionListener(controler);
+			b6.addActionListener(controler);
+			b7.addActionListener(controler);
+			b8.addActionListener(controler);
 			pane.add(b);
 			pane.add(b1);
 			pane.add(b2);
@@ -66,9 +75,20 @@ public class GUI {
 		public void setFrame(JFrame frame) {
 			this.frame = frame;
 	}
+		public int getNum(){
+			
+				String letter;
+				letter = JOptionPane.showInputDialog(frame, "Enter the name of the Node,then press anywhere on the screen to locate the Node");
+				
+				return Integer.parseInt(letter);
+			
+			
+		}
 		public static void main(String args[]){
 			GUIController gc = new GUIController();
 			GUI gui = new GUI(gc);
+			gc.setGui(gui);
 			gui.createTopology();
 		}
+		
 }
