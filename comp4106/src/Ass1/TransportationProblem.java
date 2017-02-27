@@ -194,6 +194,33 @@ public class TransportationProblem {
 		}
 		return n.getLeftSide().size() +n.getTime()%TIME;
 	}
+	private int heuristicTwo(Node n){
+		if(n.getTime()>30){
+			return 100;
+		}
+		return n.getLeftSide().size() +n.getTime()%TIME;
+	}
+	private int heuristicThree(Node n){
+		if((n.getStepToThis().size()==1 && n.getLeftSide().get(n.getLeftSide().size()-1)==-1)||
+				(n.getStepToThis().size()==2 && n.getLeftSide().get(n.getLeftSide().size()-1)==0)){
+			return 100;
+		}else{
+			if(n.getStepToThis().size()>1){
+				if(Math.abs(n.getStepToThis().get(1)-n.getStepToThis().get(0))>5){
+					return 100;
+				}
+			}
+		}
+	
+	if(n.getStepToThis().size()==1 && n.getLeftSide().get(n.getLeftSide().size()-1)==0){
+		if(n.getStepToThis().get(0)>2){
+			return 100;
+		}
+		
+	}
+	return 0;
+		
+	}
 	public void addChildren(Node currentNode){
 		if(currentNode.getLeftSide().get(currentNode.getLeftSide().size()-1)==0){
 			for(int i=0;i<currentNode.getLeftSide().size()-1;i++){

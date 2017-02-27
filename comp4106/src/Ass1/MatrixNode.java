@@ -3,7 +3,8 @@ package Ass1;
 import java.util.ArrayList;
 
 public class MatrixNode {
-
+	private int L =2;
+	private int W=5;
 	private int stage;
 	private MatrixNode parent;
 	private ArrayList<MatrixNode> children;
@@ -36,8 +37,8 @@ public class MatrixNode {
 		return parent;
 	}
 	public void print() {
-		for(int i=0;i<3;i++){
-			for(int j=0;j<3;j++){
+		for(int i=0;i<L;i++){
+			for(int j=0;j<W;j++){
 				System.out.print(state[i][j]+" ");
 			}
 			System.out.println();

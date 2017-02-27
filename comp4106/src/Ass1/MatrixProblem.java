@@ -3,36 +3,41 @@ package Ass1;
 import java.util.ArrayList;
 
 public class MatrixProblem {
-	private final int L=3;
-	private final int W=3;
-	private final int MaxMovesOne=16;
+	private final int L=2;
+	private  int W=5;
+	private final int MaxMovesOne=9;
 	private int matrix[][];
 	private ArrayList<Integer> operations;
 	private ArrayList<MatrixNode> fringes;
 	private ArrayList<MatrixNode> closed;
 	private int GoalState[][];
 	private MatrixNode head;
+	private  int SIZE=5;
 	public MatrixProblem(){
 		matrix = new int[L][W];
 		matrix[0][0]=1;
 		matrix[0][1]=2;
 		matrix[0][2]=3;
-		matrix[1][0]=7;
+		//matrix[1][2]=4;
+		//matrix[2][2]=5;
+		//matrix[2][1]=6;
+		//matrix[2][0]=7;
+		//matrix[1][0]=0;
+		//matrix[1][1]=8;
+		matrix[0][3]=9;
+		//matrix[1][3]=5;
+		//matrix[1][2]=6;
+		//matrix[1][1]=0;
+		//matrix[1][0]=7;
+		matrix[0][4]=5;
+		matrix[1][4]=6;
+		matrix[1][3]=7;
+		matrix[1][2]=8;
 		matrix[1][1]=4;
-		matrix[1][2]=0;
-		matrix[2][0]=8;
-		matrix[2][1]=6;
-		matrix[2][2]=5;
+		matrix[1][0]=0;
+		
 		GoalState = new int [L][W];
-		GoalState[0][0]=1;
-		GoalState[0][1]=2;
-		GoalState[0][2]=3;
-		GoalState[1][2]=4;
-		GoalState[2][2]=5;
-		GoalState[2][1]=6;
-		GoalState[2][0]=7;
-		GoalState[1][0]=8;
-		GoalState[1][1]=0;
+		createGoalState(GoalState);
 		operations = new ArrayList<Integer>();
 		for(int i=1;i<MaxMovesOne;i++){
 		operations.add(i);
@@ -43,6 +48,41 @@ public class MatrixProblem {
 		fringes.add(head);
 	}
 	
+	private void createGoalState(int[][] goalState2) {
+	if(W==3){
+		GoalState[0][0]=1;
+		GoalState[0][1]=2;
+		GoalState[0][2]=3;
+		GoalState[1][2]=4;
+		GoalState[2][2]=5;
+		GoalState[2][1]=6;
+		GoalState[2][0]=7;
+		GoalState[1][0]=8;
+		GoalState[1][1]=0;
+	}else if (W==4){
+		GoalState[0][0]=1;
+		GoalState[0][1]=2;
+		GoalState[0][2]=3;
+		GoalState[0][3]=4;
+		GoalState[1][3]=5;
+		GoalState[1][2]=6;
+		GoalState[1][1]=7;
+		GoalState[1][0]=0;
+	}else {
+		GoalState[0][0]=1;
+		GoalState[0][1]=2;
+		GoalState[0][2]=3;
+		GoalState[0][3]=4;
+		GoalState[0][4]=5;
+		GoalState[1][4]=6;
+		GoalState[1][3]=7;
+		GoalState[1][2]=8;
+		GoalState[1][1]=9;
+		GoalState[1][0]=0;
+	}
+		
+	}
+
 	public void bfs(){
 		MatrixNode currentNode = fringes.remove(0);
 		
@@ -252,7 +292,7 @@ private int g(MatrixNode n){
 
 	private void addChildren(MatrixNode currentNode) {
 		int[] arr=findPostionOfZero(currentNode);
-		int temp;
+		
 			int x=arr[0];
 			int y=arr[1];
 			for(int i:operations){
@@ -297,54 +337,6 @@ private int g(MatrixNode n){
 					state[x][y]=state[x+1][y-1];
 					state[x+1][y-1]=0;
 					flag=true;
-				}else if(i==9){
-					temp=state[0][0];
-					if(state[0][0]!=0 && state[2][1]!=0){
-					state[0][0] =state[2][1];
-					state[2][1]=temp;
-					}
-				}else if(i==10){
-					temp=state[0][0];
-					if(state[0][0]!=0 &&state[1][2]!=0){
-					state[0][0] =state[1][2];
-					state[1][2]=temp;
-					}
-				}else if(i==11){
-					temp=state[0][1];
-					if(state[0][1]!=0 &&state[2][0]!=0){
-					state[0][1] =state[2][0];
-					state[2][0]=temp;
-					}
-				}else if (i==12){
-					temp=state[0][1];
-					if(state[0][1]!=0 &&state[2][2]!=0){
-					state[0][1] =state[2][2];
-					state[2][2]=temp;
-					}
-				}else if ( i==13){
-					temp=state[0][2];
-					if(state[0][2]!=0 &&state[1][0]!=0){
-					state[0][2] =state[1][0];
-					state[1][0]=temp;
-					}
-				}else if ( i==14){
-					temp=state[1][0];
-					if(state[1][0]!=0 &&state[2][2]!=0){
-					state[1][0] =state[2][2];
-					state[2][2]=temp;
-					}
-				}else if ( i==15){
-					temp=state[1][2];
-					if(state[1][2]!=0 &&state[2][0]!=0){
-					state[1][2] =state[2][0];
-					state[2][0]=temp;
-					}
-				}else if ( i==16){
-						temp=state[2][1];
-						if(state[2][1]!=0 &&state[0][2]!=0){
-						state[2][1] =state[0][2];
-						state[0][2]=temp;
-						}
 				}
 				MatrixNode child = new MatrixNode(currentNode,state);
 				child.setStage(currentNode.getStage()+1);
@@ -353,8 +345,199 @@ private int g(MatrixNode n){
 					currentNode.addChild(child);
 				}
 			}
+			
+			if (SIZE==3){
+				doThreeByThree(currentNode);
+			}else if (SIZE==4){
+				doTwoByFour(currentNode);
+			}else if (SIZE ==5){
+				doTwoByFive(currentNode);
+			}
 		
 	}
+	private void doThreeByThree(MatrixNode currentNode) {
+		int i = 9;
+		while (i<17){
+			int[][] state = makeCopyOf(currentNode.getState());
+			int temp=0;
+			boolean flag=false;
+		 if(i==9){
+			temp=state[0][0];
+			if(state[0][0]!=0 && state[2][1]!=0){
+			state[0][0] =state[2][1];
+			state[2][1]=temp;
+			flag=true;
+			}
+		}else if(i==10){
+			temp=state[0][0];
+			if(state[0][0]!=0 &&state[1][2]!=0){
+			state[0][0] =state[1][2];
+			state[1][2]=temp;
+			flag=true;
+			}
+		}else if(i==11){
+			temp=state[0][1];
+			if(state[0][1]!=0 &&state[2][0]!=0){
+			state[0][1] =state[2][0];
+			state[2][0]=temp;
+			flag=true;
+			}
+		}else if (i==12){
+			temp=state[0][1];
+			if(state[0][1]!=0 &&state[2][2]!=0){
+			state[0][1] =state[2][2];
+			state[2][2]=temp;
+			flag=true;
+			}
+		}else if ( i==13){
+			temp=state[0][2];
+			if(state[0][2]!=0 &&state[1][0]!=0){
+			state[0][2] =state[1][0];
+			state[1][0]=temp;
+			flag=true;
+			}
+		}else if ( i==14){
+			temp=state[1][0];
+			if(state[1][0]!=0 &&state[2][2]!=0){
+			state[1][0] =state[2][2];
+			state[2][2]=temp;
+			flag=true;
+			}
+		}else if ( i==15){
+			temp=state[1][2];
+			if(state[1][2]!=0 &&state[2][0]!=0){
+			state[1][2] =state[2][0];
+			state[2][0]=temp;
+			flag=true;
+			}
+		}else if ( i==16){
+				temp=state[2][1];
+				if(state[2][1]!=0 &&state[0][2]!=0){
+				state[2][1] =state[0][2];
+				state[0][2]=temp;
+				flag=true;
+				}
+		}
+		 MatrixNode child = new MatrixNode(currentNode,state);
+			child.setStage(currentNode.getStage()+1);
+			if(notInClosed(child) && flag){
+				
+				currentNode.addChild(child);
+			}
+		i++;
+		}
+		
+	}
+
+	private void doTwoByFour(MatrixNode currentNode) {
+		int i = 0;
+		while (i<4){
+			int[][] state = makeCopyOf(currentNode.getState());
+			int temp=0;
+			boolean flag=false;
+		 if(i==0){
+			temp=state[0][0];
+			if(state[0][0]!=0 && state[1][2]!=0){
+			state[0][0] =state[1][2];
+			state[1][2]=temp;
+			flag=true;
+			}
+		}else if(i==1){
+			temp=state[0][1];
+			if(state[0][1]!=0 &&state[1][3]!=0){
+			state[0][1] =state[1][3];
+			state[1][3]=temp;
+			flag=true;
+			}
+		}else if(i==2){
+			temp=state[0][2];
+			if(state[0][2]!=0 &&state[1][0]!=0){
+			state[0][2] =state[1][0];
+			state[1][0]=temp;
+			flag=true;
+			}
+		}else if (i==3){
+			temp=state[0][3];
+			if(state[0][3]!=0 &&state[1][1]!=0){
+			state[0][3] =state[1][1];
+			state[1][1]=temp;
+			flag=true;
+			}
+		}
+		 MatrixNode child = new MatrixNode(currentNode,state);
+			child.setStage(currentNode.getStage()+1);
+			if(notInClosed(child) && flag){
+				
+				currentNode.addChild(child);
+			}
+		i++;
+		}
+		
+	}
+
+	private void doTwoByFive(MatrixNode currentNode) {
+		int i = 0;
+		while (i<6){
+			int[][] state = makeCopyOf(currentNode.getState());
+			int temp=0;
+			boolean flag=false;
+		 if(i==0){
+			temp=state[0][0];
+			if(state[0][0]!=0 && state[1][2]!=0){
+			state[0][0] =state[1][2];
+			state[1][2]=temp;
+			flag=true;
+			}
+		}else if(i==1){
+			temp=state[0][1];
+			if(state[0][1]!=0 &&state[1][3]!=0){
+			state[0][0] =state[1][3];
+			state[1][3]=temp;
+			flag=true;
+			}
+		}else if(i==2){
+			temp=state[0][2];
+			if(state[0][2]!=0 &&state[1][0]!=0){
+			state[0][2] =state[1][0];
+			state[1][0]=temp;
+			flag=true;
+			}
+		}else if (i==3){
+			temp=state[0][3];
+			if(state[0][3]!=0 &&state[1][1]!=0){
+			state[0][3] =state[1][1];
+			state[1][1]=temp;
+			flag=true;
+			}
+			
+		}else if (i==4){
+			temp=state[0][4];
+			if(state[0][4]!=0 &&state[1][2]!=0){
+			state[0][4] =state[1][2];
+			state[1][2]=temp;
+			flag=true;
+			}
+			
+		}else if (i==5){
+			temp=state[0][2];
+			if(state[0][2]!=0 &&state[1][4]!=0){
+			state[0][2] =state[1][4];
+			state[1][4]=temp;
+			flag=true;
+			}
+			
+		}
+		 MatrixNode child = new MatrixNode(currentNode,state);
+			child.setStage(currentNode.getStage()+1);
+			if(notInClosed(child) && flag){
+				
+				currentNode.addChild(child);
+			}
+		i++;
+		}
+		
+	}
+
 	private int[][] makeCopyOf(int[][] state) {
 		int[][] k = new int[L][W];
 		for(int i=0;i<L;i++){
@@ -399,6 +582,6 @@ private int g(MatrixNode n){
 
 	public static void main(String args[]){
 		MatrixProblem mp = new MatrixProblem();
-		mp.aStarSearch();
+		mp.bfs();
 	}
 }
