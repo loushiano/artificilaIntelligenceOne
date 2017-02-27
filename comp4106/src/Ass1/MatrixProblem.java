@@ -5,24 +5,36 @@ import java.util.ArrayList;
 public class MatrixProblem {
 	private final int L=3;
 	private final int W=3;
+	private final int MaxMovesOne=16;
 	private int matrix[][];
 	private ArrayList<Integer> operations;
 	private ArrayList<MatrixNode> fringes;
 	private ArrayList<MatrixNode> closed;
+	private int GoalState[][];
 	private MatrixNode head;
 	public MatrixProblem(){
 		matrix = new int[L][W];
 		matrix[0][0]=1;
 		matrix[0][1]=2;
 		matrix[0][2]=3;
-		matrix[1][0]=8;
+		matrix[1][0]=7;
 		matrix[1][1]=4;
 		matrix[1][2]=0;
-		matrix[2][0]=7;
+		matrix[2][0]=8;
 		matrix[2][1]=6;
 		matrix[2][2]=5;
+		GoalState = new int [L][W];
+		GoalState[0][0]=1;
+		GoalState[0][1]=2;
+		GoalState[0][2]=3;
+		GoalState[1][2]=4;
+		GoalState[2][2]=5;
+		GoalState[2][1]=6;
+		GoalState[2][0]=7;
+		GoalState[1][0]=8;
+		GoalState[1][1]=0;
 		operations = new ArrayList<Integer>();
-		for(int i=1;i<9;i++){
+		for(int i=1;i<MaxMovesOne;i++){
 		operations.add(i);
 		}
 		fringes= new ArrayList<MatrixNode>();
@@ -107,7 +119,7 @@ public void aStarSearch(){
 			
 		}
 		System.out.println("done");
-		
+		currentNode.print();
 	}
 private void sortFringes() {
 	for(int i=0;i<fringes.size();i++){
@@ -128,12 +140,28 @@ private int g(MatrixNode n){
 	
 	return heuristicOne(n)+n.getStage();
 }
-private int heuristicOne(MatrixNode n) {
-	return 0;
-}
+	private int heuristicOne(MatrixNode n) {
+		
+		int count=0;
+		for(int i=0;i<L;i++){
+			for(int j=0;j<W;j++){
+				if(n.getState()[i][j]!=GoalState[i][j]){
+					count++;
+				}
+			}
+		}
+		
+		return count;
+	}
+	private int heuristicTwo(MatrixNode n){
+		return 0;//how manysteps do we still have
+	}
+	private int heuristicCombination(MatrixNode n){
+		return heuristicOne(n)+heuristicTwo(n);//both
+	}
 
 	private boolean allInRightPosition(MatrixNode currentNode) {
-		int k =1;
+		/**int k =1;
 		if(currentNode.getState()[1][1]!=0){
 			return false;
 		}
@@ -165,11 +193,21 @@ private int heuristicOne(MatrixNode n) {
 				}
 			}
 		
+		return true;**/
+		for(int i=0;i<L;i++){
+			for(int j=0;j<W;j++){
+				if(currentNode.getState()[i][j]!=GoalState[i][j]){
+					return false;
+				}
+			}
+		}
 		return true;
+		
 	}
 
 	private void addChildren(MatrixNode currentNode) {
 		int[] arr=findPostionOfZero(currentNode);
+		int temp;
 			int x=arr[0];
 			int y=arr[1];
 			for(int i:operations){
@@ -214,6 +252,54 @@ private int heuristicOne(MatrixNode n) {
 					state[x][y]=state[x+1][y-1];
 					state[x+1][y-1]=0;
 					flag=true;
+				}else if(i==9){
+					temp=state[0][0];
+					if(state[0][0]!=0 && state[2][1]!=0){
+					state[0][0] =state[2][1];
+					state[2][1]=temp;
+					}
+				}else if(i==10){
+					temp=state[0][0];
+					if(state[0][0]!=0 &&state[1][2]!=0){
+					state[0][0] =state[1][2];
+					state[1][2]=temp;
+					}
+				}else if(i==11){
+					temp=state[0][1];
+					if(state[0][1]!=0 &&state[2][0]!=0){
+					state[0][1] =state[2][0];
+					state[2][0]=temp;
+					}
+				}else if (i==12){
+					temp=state[0][1];
+					if(state[0][1]!=0 &&state[2][2]!=0){
+					state[0][1] =state[2][2];
+					state[2][2]=temp;
+					}
+				}else if ( i==13){
+					temp=state[0][2];
+					if(state[0][2]!=0 &&state[1][0]!=0){
+					state[0][2] =state[1][0];
+					state[1][0]=temp;
+					}
+				}else if ( i==14){
+					temp=state[1][0];
+					if(state[1][0]!=0 &&state[2][2]!=0){
+					state[1][0] =state[2][2];
+					state[2][2]=temp;
+					}
+				}else if ( i==15){
+					temp=state[1][2];
+					if(state[1][2]!=0 &&state[2][0]!=0){
+					state[1][2] =state[2][0];
+					state[2][0]=temp;
+					}
+				}else if ( i==16){
+						temp=state[2][1];
+						if(state[2][1]!=0 &&state[0][2]!=0){
+						state[2][1] =state[0][2];
+						state[0][2]=temp;
+						}
 				}
 				MatrixNode child = new MatrixNode(currentNode,state);
 				child.setStage(currentNode.getStage()+1);
