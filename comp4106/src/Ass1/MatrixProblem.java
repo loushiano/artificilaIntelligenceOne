@@ -154,8 +154,53 @@ private int g(MatrixNode n){
 		return count;
 	}
 	private int heuristicTwo(MatrixNode n){
-		return 0;//how manysteps do we still have
+		int count=0;
+		for(int i=0;i<L*W-1;i++){
+			count +=howManySteps(i,n);
+			
+		}
+		return count;
 	}
+	private int howManySteps(int i,MatrixNode n) {
+		int x=getX(i);
+		int y =getY(i);
+		if(n.getState()[x][y]==i){
+			return 0;
+		}else if(canGoChessMove(i,n,x,y)){
+				return 1;
+			}else if(CanBeSwitchedWithBlank(i,n,x,y)){
+				return 1;
+			}else{
+				return howFar(i,n,x,y);
+			}
+		}
+	
+
+	private int howFar(int i, MatrixNode n, int x, int y) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	private boolean CanBeSwitchedWithBlank(int i, MatrixNode n, int x, int y) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	private boolean canGoChessMove(int i, MatrixNode n, int x, int y) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	private int getY(int i) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	private int getX(int i) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 	private int heuristicCombination(MatrixNode n){
 		return heuristicOne(n)+heuristicTwo(n);//both
 	}
