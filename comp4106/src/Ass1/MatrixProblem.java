@@ -1,10 +1,12 @@
 package Ass1;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class MatrixProblem {
 	private final int L=2;
 	private  int W=5;
+	private  int SIZE=5;
 	private final int MaxMovesOne=9;
 	private int matrix[][];
 	private ArrayList<Integer> operations;
@@ -12,29 +14,16 @@ public class MatrixProblem {
 	private ArrayList<MatrixNode> closed;
 	private int GoalState[][];
 	private MatrixNode head;
-	private  int SIZE=5;
+	
 	public MatrixProblem(){
 		matrix = new int[L][W];
-		matrix[0][0]=1;
-		matrix[0][1]=2;
-		matrix[0][2]=3;
-		//matrix[1][2]=4;
-		//matrix[2][2]=5;
-		//matrix[2][1]=6;
-		//matrix[2][0]=7;
-		//matrix[1][0]=0;
-		//matrix[1][1]=8;
-		matrix[0][3]=9;
-		//matrix[1][3]=5;
-		//matrix[1][2]=6;
-		//matrix[1][1]=0;
-		//matrix[1][0]=7;
-		matrix[0][4]=5;
-		matrix[1][4]=6;
-		matrix[1][3]=7;
-		matrix[1][2]=8;
-		matrix[1][1]=4;
-		matrix[1][0]=0;
+		Scanner reader = new Scanner(System.in);  // Reading from System.in
+		System.out.println("Enter the tiles numbers: ");
+		for(int x=0;x<L*W;x++){
+			System.out.print("for " + x/W+","+x%W+": ");
+			matrix[x/W][x%W] =reader.nextInt();
+			
+		}
 		
 		GoalState = new int [L][W];
 		createGoalState(GoalState);
@@ -202,8 +191,8 @@ private int g(MatrixNode n){
 		return count;
 	}
 	private int howManySteps(int i,MatrixNode n) {
-		int x=getX(i);
-		int y =getY(i);
+		int x=getX(i,n);
+		int y =getY(i,n);
 		if(n.getState()[x][y]==i){
 			return 0;
 		}else if(canGoChessMove(i,n,x,y)){
@@ -231,13 +220,29 @@ private int g(MatrixNode n){
 		return false;
 	}
 
-	private int getY(int i) {
-		// TODO Auto-generated method stub
+	private int getY(int i,MatrixNode n) {
+		int x=0;
+		int y=0;
+		for(;x<L;x++){
+			for(;y<W;y++){
+				if(n.getState()[x][y]==i){
+					return y;
+				}
+			}
+		}
 		return 0;
 	}
 
-	private int getX(int i) {
-		// TODO Auto-generated method stub
+	private int getX(int i,MatrixNode n) {
+		int x=0;
+		int y=0;
+		for(;x<L;x++){
+			for(;y<W;y++){
+				if(n.getState()[x][y]==i){
+					return x;
+				}
+			}
+		}
 		return 0;
 	}
 
