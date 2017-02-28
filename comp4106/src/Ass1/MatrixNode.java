@@ -3,8 +3,8 @@ package Ass1;
 import java.util.ArrayList;
 
 public class MatrixNode {
-	private int L =2;
-	private int W=5;
+	private int L =3;
+	private int W=3;
 	private int stage;
 	private MatrixNode parent;
 	private ArrayList<MatrixNode> children;

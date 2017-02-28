@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class TransportationProblem {
-	private final int TIME=17;
-	private final int numPlayers=4;
+	private final int TIME=30;
+	private final int numPlayers=6;
 	private Node head;
 	private ArrayList<Integer> times;
 	private ArrayList<Node> fringes;
@@ -139,7 +139,16 @@ public class TransportationProblem {
 				fringes.add(n);
 			}
 			sortFringes();
+			
+			int i=0;
+			while(i==0)
+			if(notInClosed(fringes.get(0))){
 			currentNode =fringes.remove(0);
+			i=1;
+			}else {
+				fringes.remove(0);
+				
+		}
 			
 			
 			

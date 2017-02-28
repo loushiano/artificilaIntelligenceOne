@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class MatrixProblem {
-	private final int L=2;
-	private  int W=5;
-	private  int SIZE=5;
+	private final int L=3;
+	private  int W=3;
+	private  int SIZE=3;
 	private final int MaxMovesOne=9;
 	private int matrix[][];
 	private ArrayList<Integer> operations;
@@ -14,6 +14,7 @@ public class MatrixProblem {
 	private ArrayList<MatrixNode> closed;
 	private int GoalState[][];
 	private MatrixNode head;
+	int counter =0;
 	
 	public MatrixProblem(){
 		matrix = new int[L][W];
@@ -78,8 +79,10 @@ public class MatrixProblem {
 		while(!allInRightPosition(currentNode)
 				){
 			closed.add(currentNode);
+			counter++;
 			currentNode.print();
-			System.out.println(currentNode.getStage());
+			System.out.println(currentNode.getStage()+ " "+ counter);
+			
 			addChildren(currentNode);
 			for(MatrixNode n:currentNode.getChildren()){
 				
@@ -134,8 +137,10 @@ public void aStarSearch(){
 		
 		MatrixNode currentNode =fringes.remove(0);
 		while(!allInRightPosition(currentNode)){
+			counter++;
 			closed.add(currentNode);
 			currentNode.print();
+			System.out.println(counter);
 			addChildren(currentNode);
 			for(MatrixNode n:currentNode.getChildren()){
 				fringes.add(n);
@@ -196,27 +201,71 @@ private int g(MatrixNode n){
 		if(n.getState()[x][y]==i){
 			return 0;
 		}else if(canGoChessMove(i,n,x,y)){
-				return 1;
+				return 0;
 			}else if(CanBeSwitchedWithBlank(i,n,x,y)){
-				return 1;
+				return 0;
 			}else{
-				return howFar(i,n,x,y);
+				return 2;
 			}
 		}
 	
 
-	private int howFar(int i, MatrixNode n, int x, int y) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	
 
 	private boolean CanBeSwitchedWithBlank(int i, MatrixNode n, int x, int y) {
-		// TODO Auto-generated method stub
+		if( x!=L-1 && n.getState()[x][y] ==0 && n.getState()[x+1][y]==i ){
+			return true;
+		}
+		if( y!=W-1 && n.getState()[x][y] ==0 && n.getState()[x][y+1]==i ){
+			return true;
+		}
+		if(  x!=L-1 && y!=W-1 && n.getState()[x][y] ==0 && n.getState()[x+1][y+1]==i){
+			return true;
+		}
+		if( x!=0 && n.getState()[x][y] ==0 && n.getState()[x-1][y]==i ){
+			return true;
+		}
+		if( y!=0 && n.getState()[x][y] ==0 && n.getState()[x][y-1]==i){
+			return true;
+		}
+		if( x!=0 && y!=0 && n.getState()[x][y] ==0 && n.getState()[x-1][y-1]==i){
+			return true;
+		}
+		if(  x!=W-1 && y!=0 && n.getState()[x][y] ==0 && n.getState()[x+1][y-1]==i){
+			return true;
+		}
+		if( x!=0 && y!=L-1 && n.getState()[x][y] ==0 && n.getState()[x-1][y+1]==i){
+			return true;
+		}
+		
 		return false;
 	}
 
 	private boolean canGoChessMove(int i, MatrixNode n, int x, int y) {
-		// TODO Auto-generated method stub
+		if( x!=L-1 && y<W-2 && n.getState()[x][y] !=0 && n.getState()[x+1][y+2]==i && x!=L-1 && y<W-2){
+			return true;
+		}
+		if(y!=W-1 && x<L-2 && n.getState()[x][y] !=0 && n.getState()[x+2][y+1]==i  ){
+			return true;
+		}
+		if(x!=0 && y<W-2 && n.getState()[x][y] !=0 && n.getState()[x-1][y+2]==i){
+			return true;
+		}
+		if(x>1 && y<W-1 && n.getState()[x][y] !=0 && n.getState()[x-2][y+1]==i ){
+			return true;
+		}
+		if( y!=0 && x>1 && n.getState()[x][y] !=0 && n.getState()[x-2][y-1]==i && y!=0 && x>1){
+			return true;
+		}
+		if(x!=0 && y>1 && n.getState()[x][y] !=0 && n.getState()[x-1][y-2]==i ){
+			return true;
+		}
+		if( x!=W-1 && y>1 && n.getState()[x][y] !=0 && n.getState()[x+1][y-2]==i ){
+			return true;
+		}
+		if( x<L-2 && y>1 && n.getState()[x][y] !=0 && n.getState()[x+2][y-1]==i ){
+			return true;
+		}
 		return false;
 	}
 
@@ -587,6 +636,6 @@ private int g(MatrixNode n){
 
 	public static void main(String args[]){
 		MatrixProblem mp = new MatrixProblem();
-		mp.bfs();
+		mp.aStarSearch();
 	}
 }
