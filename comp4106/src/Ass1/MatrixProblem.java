@@ -172,7 +172,7 @@ private void sortFringes() {
 private int g(MatrixNode n){
 	
 	
-	return heuristicOne(n)+n.getStage();
+	return heuristicCombination(n)+n.getStage();
 }
 	private int heuristicOne(MatrixNode n) {
 		
