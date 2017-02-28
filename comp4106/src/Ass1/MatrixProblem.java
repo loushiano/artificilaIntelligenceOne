@@ -196,21 +196,23 @@ private int g(MatrixNode n){
 		return count;
 	}
 	private int howManySteps(int i,MatrixNode n) {
-		int x=getX(i,n);
-		int y =getY(i,n);
-		if(n.getState()[x][y]==i){
+		int x=getX(i,n.getState());
+		int y =getY(i,n.getState());
+		int z =getX(i,GoalState);
+		int w=getY(i,GoalState);
+		if(n.getState()[z][w]==i){
 			return 0;
-		}else if(canGoChessMove(i,n,x,y)){
-				return 0;
-			}else if(CanBeSwitchedWithBlank(i,n,x,y)){
-				return 0;
-			}else{
-				return 2;
-			}
+		}else {
+			return howFar(x,y,z,w);
+		}
 		}
 	
 
 	
+
+	private int howFar( int x, int y,int z, int w) {
+		return Math.abs(x-z)+Math.abs(y-w);
+	}
 
 	private boolean CanBeSwitchedWithBlank(int i, MatrixNode n, int x, int y) {
 		if( x!=L-1 && n.getState()[x][y] ==0 && n.getState()[x+1][y]==i ){
@@ -269,12 +271,12 @@ private int g(MatrixNode n){
 		return false;
 	}
 
-	private int getY(int i,MatrixNode n) {
+	private int getY(int i,int[][] state) {
 		int x=0;
 		int y=0;
 		for(;x<L;x++){
 			for(;y<W;y++){
-				if(n.getState()[x][y]==i){
+				if(state[x][y]==i){
 					return y;
 				}
 			}
@@ -282,12 +284,12 @@ private int g(MatrixNode n){
 		return 0;
 	}
 
-	private int getX(int i,MatrixNode n) {
+	private int getX(int i,int[][] state) {
 		int x=0;
 		int y=0;
 		for(;x<L;x++){
 			for(;y<W;y++){
-				if(n.getState()[x][y]==i){
+				if(state[x][y]==i){
 					return x;
 				}
 			}

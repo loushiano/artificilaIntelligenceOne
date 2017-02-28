@@ -178,7 +178,7 @@ public class TransportationProblem {
 	private int g(Node n){
 		
 		
-		return heuristicOne(n)+n.getStage();
+		return heuristicThree(n)+n.getStage();
 	}
 	private int heuristicOne(Node n) {
 		if(n.getTime()>30){
@@ -205,6 +205,9 @@ public class TransportationProblem {
 	}
 	private int heuristicTwo(Node n){
 		if(n.getTime()>30){
+			return 100;
+		}
+		if(n.getStage()>9){
 			return 100;
 		}
 		return n.getLeftSide().size() +n.getTime()%TIME;
@@ -355,7 +358,7 @@ public class TransportationProblem {
 	}
 	public static void main(String args[]){
 	TransportationProblem p= new TransportationProblem();
-	p.aStarSearch();
+	p.bdfs();
 		
 	}
 }
